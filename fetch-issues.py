@@ -21,47 +21,47 @@ Issue = namedtuple("Issue", ["created", "title", "url"])
 
 
 def github_parser(json_string, ticket_base_url):
-    return [
+    return (
         Issue(
             created=issue["created_at"].split("T")[0],
             title=issue["title"],
             url="/".join([ticket_base_url, str(issue["number"])]),
         )
         for issue in json.loads(json_string)
-    ]
+    )
 
 
 def redmine_parser(json_string, ticket_base_url):
-    return [
+    return (
         Issue(
             created=issue["start_date"],
             title=issue["subject"],
             url="/".join([ticket_base_url, str(issue["id"])]),
         )
         for issue in json.loads(json_string)["issues"]
-    ]
+    )
 
 
 def trac_parser(csv_string, ticket_base_url):
-    return [
+    return (
         Issue(
             created=issue["time"].split(" ")[0],
             title=issue["summary"],
             url="/".join([ticket_base_url, issue["\ufeffid"]]),
         )
         for issue in csv.DictReader(io.StringIO(csv_string))
-    ]
+    )
 
 
 def mantis_parser(csv_string, ticket_base_url):
-    return [
+    return (
         Issue(
             created=issue["Date Submitted"],
             title=issue["Summary"],
             url="{}{}".format(ticket_base_url, issue["Id"]),
         )
         for issue in csv.DictReader(io.StringIO(csv_string))
-    ]
+    )
 
 
 IssueTracker = namedtuple(
