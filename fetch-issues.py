@@ -122,6 +122,13 @@ issue_trackers = [
         ticket_base_url="https://github.com/CarlGamble/INTO-CPS-DSE/issues",
     ),
     IssueTracker(
+        parser=github_parser,
+        project="INTO-CPS UI",
+        url="https://api.github.com/repos/into-cps/intocps-ui/issues?state=open",  # noqa
+        headers=None,
+        ticket_base_url="https://github.com/into-cps/intocps-ui/issues",
+    ),
+    IssueTracker(
         parser=mantis_parser,
         project="RT-Tester",
         url="https://software.verified.de/mantis/csv_export.php",
