@@ -179,7 +179,7 @@ def main():
     f.write("Below you will find a list of weekly digests giving a historical overview of all known issues across all the tools that are part of INTO-CPS.\n")
     
 
-    with open('issue-history.txt') as fc:
+    with open('issue-history.txt','rw') as fc:
         my_lines = fc.readlines()
         fc.close()
 
