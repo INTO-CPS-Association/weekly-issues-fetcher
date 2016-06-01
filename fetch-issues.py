@@ -7,6 +7,7 @@ import csv
 import io
 import json
 import requests
+import time
 
 USER_HOME = os.path.expanduser("~")
 SECRETS_FILE = os.path.join(USER_HOME, "fetch-issues.json")
@@ -139,19 +140,33 @@ issue_trackers = [
 
 
 def main():
+    
+    timestr = time.strftime("%W")#"%Y-%m-%d")
+    print (timestr)
+    f = open("week-"+timestr+'.md','w')
+    f.write('---\n')
+    f.write('layout: default\n')
+    f.write('title: Week {} {}, Weekly Issues Digest\n'.format(time.strftime("%W"),time.strftime("%Y")))
+    f.write('---\n\n')
+
+    f.write('# Week {} {}, Weekly Issues Digest for INTO-CPS\n\n'.format(time.strftime("%W"),time.strftime("%Y")))
+
+    f.write('## Currently Open Issues\n\n')
+    
     for tracker in sorted(issue_trackers, key=lambda tracker: tracker.project):
-        print("## {}".format(tracker.project))
+        print("### {}".format(tracker.project))
         for issue in tracker.parser(
             requests.get(tracker.url, headers=tracker.headers).text,
             tracker.ticket_base_url,
         ):
-            print(
-                "* [{} - ({})]({})".format(
+            line = "* [{} - ({})]({})".format(
                     issue.title,
                     issue.created,
                     issue.url,
                 )
-            )
+            f.write(line+'\n')
+            print(line)
+    f.close()
 
 if __name__ == "__main__":
     main()
