@@ -128,27 +128,27 @@ issue_trackers = [
         headers=None,
         ticket_base_url="https://github.com/into-cps/intocps-ui/issues",
     ),
-    IssueTracker(
-        parser=mantis_parser,
-        project="RT-Tester",
-        url="https://software.verified.de/mantis/csv_export.php",
-        headers=get_secret("rtt_headers"),
-        ticket_base_url="https://software.verified.de/mantis/view.php?id=",
-    ),
+#    IssueTracker(
+#        parser=mantis_parser,
+#        project="RT-Tester",
+#        url="https://software.verified.de/mantis/csv_export.php",
+#        headers=get_secret("rtt_headers"),
+#        ticket_base_url="https://software.verified.de/mantis/view.php?id=",
+#    ),
 ]
 
 
 def main():
     for tracker in sorted(issue_trackers, key=lambda tracker: tracker.project):
+        print("## {}".format(tracker.project))
         for issue in tracker.parser(
             requests.get(tracker.url, headers=tracker.headers).text,
             tracker.ticket_base_url,
         ):
             print(
-                "* {} - {} [{}]({})".format(
-                    tracker.project,
-                    issue.created,
+                "* [{} - ({})]({})".format(
                     issue.title,
+                    issue.created,
                     issue.url,
                 )
             )
