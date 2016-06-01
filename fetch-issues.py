@@ -141,15 +141,24 @@ issue_trackers = [
 
 def main():
     
-    timestr = time.strftime("%W")#"%Y-%m-%d")
+    timestr = time.strftime("%Y-W%W")#"%Y-%m-%d")
     print (timestr)
-    f = open("week-"+timestr+'.md','w')
+    week = time.strftime("%W")
+    year = time.strftime("%Y")
+    name = '{}-W{}'.format(year,week)
+    fileName = name+'.md'
+    
+    fc = open('fetch-out','w')
+    fc.write(fileName)
+    fc.close()
+    
+    f = open(fileName,'w')
     f.write('---\n')
     f.write('layout: default\n')
-    f.write('title: Week {} {}, Weekly Issues Digest\n'.format(time.strftime("%W"),time.strftime("%Y")))
+    f.write('title: Week {} {}, Weekly Issues Digest\n'.format(week,year))
     f.write('---\n\n')
 
-    f.write('# Week {} {}, Weekly Issues Digest for INTO-CPS\n\n'.format(time.strftime("%W"),time.strftime("%Y")))
+    f.write('# Week {} {}, Weekly Issues Digest for INTO-CPS\n\n'.format(week,year))
 
     f.write('## Currently Open Issues\n\n')
     
@@ -166,7 +175,28 @@ def main():
                 )
             f.write(line+'\n')
             print(line)
-    f.close()
+    f.write("\n\n#History of Weekly Digests\n\n")
+    f.write("Below you will find a list of weekly digests giving a historical overview of all known issues across all the tools that are part of INTO-CPS.\n")
+    
 
+    with open('issue-history.txt') as fc:
+        my_lines = fc.readlines()
+        fc.close()
+
+        for s in my_lines:
+            f.write("* [{}]({}.html)".format(s,s))
+
+        
+        if any(name in s for s in my_lines):
+            print("already there\n")
+        else:
+            lines = [name]+ my_lines
+       
+            with open('issue-history.txt','w') as fh:
+                fh.writelines(["%s\n" % item  for item in lines])
+                fh.close()
+        
+    f.close()
+                
 if __name__ == "__main__":
     main()
