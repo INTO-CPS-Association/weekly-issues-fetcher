@@ -174,6 +174,7 @@ def main():
     
     for tracker in sorted(issue_trackers, key=lambda tracker: tracker.project):
         print("### {}".format(tracker.project))
+        f.write("\n### {}\n\n".format(tracker.project))
         for issue in tracker.parser(
             requests.get(tracker.url, headers=tracker.headers).text,
             tracker.ticket_base_url,
