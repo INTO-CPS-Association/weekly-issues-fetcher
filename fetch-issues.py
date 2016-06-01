@@ -187,7 +187,7 @@ def main():
             f.write(line+'\n')
             print(line)
     f.write("\n\n# History of Weekly Digests\n\n")
-    f.write("Below you will find a list of weekly digests giving a historical overview of all known issues across all the tools that are part of INTO-CPS.\n")
+    f.write("Below you will find a list of weekly digests giving a historical overview of all known issues across all the tools that are part of INTO-CPS.\n\n")
 
     if not os.access('issue-history.txt', os.R_OK):
         with open('issue-history.txt','w+') as fc:
@@ -199,7 +199,7 @@ def main():
 
         for s in my_lines:
             l = s.replace('\n', '').replace('\r', '')
-            f.write("* [{}]({}.html)".format(l,l))
+            f.write("* [{}]({}.html)\n".format(l,l))
 
         
         if any(name in s for s in my_lines):
