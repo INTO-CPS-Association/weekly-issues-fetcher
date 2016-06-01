@@ -13,10 +13,20 @@ USER_HOME = os.path.expanduser("~")
 SECRETS_FILE = os.path.join(USER_HOME, "fetch-issues.json")
 
 
-def get_secret(key):
-    with open(SECRETS_FILE) as f:
-        return json.load(f)[key]
 
+
+
+def get_secret(key):
+#    with open(SECRETS_FILE) as f:
+#        return json.load(f)[key]
+    return os.getenv(key)
+
+def get_github_header():
+    oauth_token = get_secret("oauth_token")
+    if (oauth_token == None):
+        return {'Accept': 'application/vnd.github.full+json'}
+    else:
+        return {'Accept': 'application/vnd.github.full+json','Authorization': 'token '+oauth_token}
 
 Issue = namedtuple("Issue", ["created", "title", "url"])
 
@@ -90,28 +100,28 @@ issue_trackers = [
         parser=github_parser,
         project="INTO-CPS Application",
         url="https://api.github.com/repos/into-cps/INTO-CPS_Application/issues?state=open",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/into-cps/INTO-CPS_Application/issues",  # noqa
     ),
     IssueTracker(
         parser=github_parser,
         project="Overture",
         url="https://api.github.com/repos/overturetool/overture/issues?state=open&labels=into-cps",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/overturetool/overture/issues",
     ),
     IssueTracker(
         parser=github_parser,
         project="Overture-FMU",
         url="https://api.github.com/repos/overturetool/overture-fmu/issues?state=open",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/overturetool/overture-fmu/issues",  # noqa
     ),
     IssueTracker(
         parser=github_parser,
         project="20-sim FMU Export",
         url="https://api.github.com/repos/controllab/fmi-export-20sim/issues?state=open",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/controllab/fmi-export-20sim/issues",  # noqa
     ),
 
@@ -119,14 +129,14 @@ issue_trackers = [
         parser=github_parser,
         project="INTO-CPS DSE",
         url="https://api.github.com/repos/CarlGamble/INTO-CPS-DSE/issues?state=open",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/CarlGamble/INTO-CPS-DSE/issues",
     ),
     IssueTracker(
         parser=github_parser,
         project="INTO-CPS UI",
         url="https://api.github.com/repos/into-cps/intocps-ui/issues?state=open",  # noqa
-        headers=None,
+        headers=get_github_header(),
         ticket_base_url="https://github.com/into-cps/intocps-ui/issues",
     ),
 #    IssueTracker(
@@ -175,16 +185,20 @@ def main():
                 )
             f.write(line+'\n')
             print(line)
-    f.write("\n\n#History of Weekly Digests\n\n")
+    f.write("\n\n# History of Weekly Digests\n\n")
     f.write("Below you will find a list of weekly digests giving a historical overview of all known issues across all the tools that are part of INTO-CPS.\n")
-    
 
-    with open('issue-history.txt','rw') as fc:
+    if not os.access('issue-history.txt', os.R_OK):
+        with open('issue-history.txt','w+') as fc:
+            fc.close()
+
+    with open('issue-history.txt',) as fc:
         my_lines = fc.readlines()
         fc.close()
 
         for s in my_lines:
-            f.write("* [{}]({}.html)".format(s,s))
+            l = s.replace('\n', '').replace('\r', '')
+            f.write("* [{}]({}.html)".format(l,l))
 
         
         if any(name in s for s in my_lines):
