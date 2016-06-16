@@ -98,10 +98,10 @@ issue_trackers = [
     ),
     IssueTracker(
         parser=github_parser,
-        project="INTO-CPS Application",
-        url="https://api.github.com/repos/into-cps/INTO-CPS_Application/issues?state=open",  # noqa
+        project="INTO-CPS App",
+        url="https://api.github.com/repos/into-cps/intocps-ui/issues?state=open",  # noqa
         headers=get_github_header(),
-        ticket_base_url="https://github.com/into-cps/INTO-CPS_Application/issues",  # noqa
+        ticket_base_url="https://github.com/into-cps/intocps-ui/issues",
     ),
     IssueTracker(
         parser=github_parser,
@@ -131,13 +131,6 @@ issue_trackers = [
         url="https://api.github.com/repos/CarlGamble/INTO-CPS-DSE/issues?state=open",  # noqa
         headers=get_github_header(),
         ticket_base_url="https://github.com/CarlGamble/INTO-CPS-DSE/issues",
-    ),
-    IssueTracker(
-        parser=github_parser,
-        project="INTO-CPS UI",
-        url="https://api.github.com/repos/into-cps/intocps-ui/issues?state=open",  # noqa
-        headers=get_github_header(),
-        ticket_base_url="https://github.com/into-cps/intocps-ui/issues",
     ),
 #    IssueTracker(
 #        parser=mantis_parser,
