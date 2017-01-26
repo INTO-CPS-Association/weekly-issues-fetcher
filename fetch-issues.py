@@ -117,13 +117,13 @@ issue_trackers = [
         headers=get_github_header(),
         ticket_base_url="https://github.com/overturetool/overture-fmu/issues",  # noqa
     ),
-    IssueTracker(
-        parser=github_parser,
-        project="20-sim FMU Export",
-        url="https://api.github.com/repos/controllab/fmi-export-20sim/issues?state=open",  # noqa
-        headers=get_github_header(),
-        ticket_base_url="https://github.com/controllab/fmi-export-20sim/issues",  # noqa
-    ),
+#    IssueTracker(
+#        parser=github_parser,
+#        project="20-sim FMU Export",
+#        url="https://api.github.com/repos/controllab/fmi-export-20sim/issues?state=open",  # noqa
+#        headers=get_github_header(),
+#        ticket_base_url="https://github.com/controllab/fmi-export-20sim/issues",  # noqa
+#    ),
 
     IssueTracker(
         parser=github_parser,
